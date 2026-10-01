@@ -22,6 +22,19 @@ jobs:
       - name: Run tests inside the container
         run: docker run --rm todo-practice npm test
 
+      - name: Start Docker Compose
+        run: docker compose up -d
+
+      - name: Wait for application
+        run: sleep 10
+
+      - name: Check application
+        run: curl --fail http://localhost:5000
+
+      - name: Stop Docker Compose
+        if: always()
+        run: docker compose down
+
   push:
     needs: build-and-test
     runs-on: ubuntu-latest
